@@ -9,8 +9,10 @@ import com.example.eddymontesinos.demogoglemaps.model.SuperMercado
 interface SuperMercadoDao {
 
     @Query("select * from SuperMercado")
-    fun litarPlatos(): List<SuperMercado>
+    fun litarSuperMercados(): List<SuperMercado>
 
     @Insert
-    fun insertarListaPlatos(plato : ArrayList<SuperMercado>) : Array<Long>
+    fun insertarListaSupermercados(superMercado : ArrayList<SuperMercado>) : Array<Long>
+    @Insert
+    fun insertarSupermercados(superMercado :SuperMercado) : Long
 }

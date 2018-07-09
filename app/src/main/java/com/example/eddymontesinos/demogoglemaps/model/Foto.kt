@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(foreignKeys = [ (ForeignKey(entity = SuperMercado::class, parentColumns = arrayOf("id"), childColumns = arrayOf("idSuper"), onDelete = ForeignKey.CASCADE))])
 class Foto (
     @PrimaryKey(autoGenerate = true)
-    var id : Long? =null,
-     val idSuper : Long? = null,
-     val foto : String = ""
+    var idFoto : Long? = null,
+     val idSuper : Long,
+     val foto : String
     )

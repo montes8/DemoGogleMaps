@@ -9,8 +9,8 @@ import com.example.eddymontesinos.demogoglemaps.model.Foto
 interface FotoDao {
 
     @Query("select * from Foto")
-    fun litarPlatos(): List<Foto>
+    fun litarFotos(): List<Foto>
 
     @Insert
-    fun insertarListaPlatos(plato : ArrayList<Foto>) : Array<Long>
+    fun insertarListaFotos(plato : ArrayList<Foto>) : Array<Long>
 }
