@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Super mercado"
+                android:textColor="#3F51B5"
                 android:layout_gravity="center_horizontal"
                 android:textStyle="bold"
                 android:textSize="15sp" />
@@ -49,7 +50,6 @@
                 android:gravity="center"
                 android:hint="direccion"
                 android:layout_gravity="center_horizontal"
-                android:textColor="#FF5722"
                 android:layout_marginTop="15dp"
                 android:textSize="10sp" />
 
