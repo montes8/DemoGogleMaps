@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_style"
+        android:padding="10dp"
+        >
+
+        <ImageView
+            android:id="@+id/image_view_plato"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="80dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/megaplaza" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="3"
+            android:paddingLeft="12dp"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/text_nombre_pletoitem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Super mercado"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="15sp" />
+
+
+            <TextView
+                android:id="@+id/text_precio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="direccion"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#FF5722"
+                android:layout_marginTop="15dp"
+                android:textSize="10sp" />
+
+
+        </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/image_detalles"
+                android:layout_width="20dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_navigate_next" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
