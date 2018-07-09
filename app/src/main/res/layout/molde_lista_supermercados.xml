@@ -32,7 +32,7 @@
 
 
             <TextView
-                android:id="@+id/text_nombre_pletoitem"
+                android:id="@+id/text_nombre_supermercadoitem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -44,7 +44,7 @@
 
 
             <TextView
-                android:id="@+id/text_precio"
+                android:id="@+id/text_direccion_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
