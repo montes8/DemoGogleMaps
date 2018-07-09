@@ -10,7 +10,7 @@ import com.example.eddymontesinos.demogoglemaps.model.SuperMercado
 import com.example.eddymontesinos.demogoglemaps.utils.DemoUtils
 import kotlinx.android.synthetic.main.molde_lista_supermercados.view.*
 
-class SupermercadoAdapter (val contexto: Context, var onDetalleClick: ((SuperMercado) -> Unit)? = null): RecyclerView.Adapter<SupermercadoAdapter.SuperMercadoViewHolder>(){
+class SuperMercadoAdapter (val contexto: Context, var onDetalleClick: ((SuperMercado) -> Unit)? = null): RecyclerView.Adapter<SuperMercadoAdapter.SuperMercadoViewHolder>(){
 
     private var listaSuperMercados : List<SuperMercado>? = null
 
