@@ -54,12 +54,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        /*
         when(item.itemId){
             R.id.menu_ir_maps -> {
                 startActivity<MapsActivity>()
             }
 
         }
+        */
         return super.onOptionsItemSelected(item)
     }
 }
