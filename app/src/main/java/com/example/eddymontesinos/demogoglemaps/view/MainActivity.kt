@@ -1,7 +1,8 @@
-package com.example.eddymontesinos.demogoglemaps
+package com.example.eddymontesinos.demogoglemaps.view
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.eddymontesinos.demogoglemaps.R
 
 class MainActivity : AppCompatActivity() {
 
