@@ -7,18 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ListaFragment">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/homeToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#3F51B5"
-        android:elevation="4dp"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:titleTextColor="#FFFFFF" />
-
-
+    
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recyclerview"

@@ -7,6 +7,7 @@ import android.support.v4.app.ListFragment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.example.eddymontesinos.demogoglemaps.ListaFragment
 import com.example.eddymontesinos.demogoglemaps.MapsFragment
 import com.example.eddymontesinos.demogoglemaps.R
 import com.example.eddymontesinos.demogoglemaps.R.id.homesToolbar
@@ -35,13 +36,12 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    fun cambiarFragmento(fragment: Fragment?, item: MenuItem){
+    fun cambiarFragmento(fragment: Fragment?){
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.content_frame,fragment)
                 .commit()
-        item.isChecked = true
-        supportActionBar!!.title = item.title
+
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_home, menu)
@@ -61,33 +61,21 @@ class HomeActivity : AppCompatActivity() {
                 //mostrar mapa
                 Log.v("aaaaa", "mostrar mapa")
 
+                cambiarFragmento(MapsFragment())
+
             }else{
                 item.setIcon(R.drawable.ic_maps)
                 esLista = true
+
+                cambiarFragmento(ListaFragment())
                 //mostrar lista
                 Log.v("aaaaa", "mostrar lista")
 
+
             }
         }
-/*
-        when(item.itemId){
-            menu_ir_lista -> {
-
-                fragment = ListFragment()
-                gestorDeFragmentos = true
-            }
-            R.id.menu_ir_maps -> {
-                item.setIcon(R.drawable.ic_lista)
-                fragment = MapsFragment()
-                gestorDeFragmentos = true
-
-            }
 
 
-        }
-        if (gestorDeFragmentos){
-            cambiarFragmento(fragment,item)
-        }*/
         return true
     }
 
