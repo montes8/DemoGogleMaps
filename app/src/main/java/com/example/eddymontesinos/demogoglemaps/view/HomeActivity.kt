@@ -22,7 +22,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         ajusteToolbarHomes()
-
+        cambiarFragmento(ListaFragment())
 
     }
 
@@ -30,6 +30,7 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(homesToolbar)
         title = "SUPER MERCADOS"
     }
+
 
     fun cambiarFragmento(fragment: Fragment?){
         supportFragmentManager
@@ -45,7 +46,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        cambiarFragmento(ListaFragment())
+
         if(item.itemId == R.id.action_centrocomerciales){
             if(esLista){
                 item.setIcon(R.drawable.ic_lista)

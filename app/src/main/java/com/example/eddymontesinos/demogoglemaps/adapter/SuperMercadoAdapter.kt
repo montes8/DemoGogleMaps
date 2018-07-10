@@ -36,7 +36,7 @@ class SuperMercadoAdapter (val contexto: Context, var onDetalleClick: ((SuperMer
 
         holder.image.setImageDrawable(DemoUtils.getImage(contexto, supermercado.fotoMiniatura))
         holder.nombre.text = supermercado.nombre
-        holder.direccion.text = "$/ ${supermercado.direccion}"
+        holder.direccion.text = supermercado.direccion
         holder.verDetalle.setOnClickListener{
             onDetalleClick?.invoke(supermercado)
         }
