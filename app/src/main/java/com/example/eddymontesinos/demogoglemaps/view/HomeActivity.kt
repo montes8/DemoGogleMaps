@@ -25,14 +25,8 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
     private fun ajusteToolbarHomes() {
         setSupportActionBar(homesToolbar)
-        title = "SUPER MERCADOS"
-
 
     }
 
@@ -51,31 +45,24 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        var gestorDeFragmentos = false
-        var fragment : Fragment? = null
-
         if(item.itemId == R.id.action_centrocomerciales){
             if(esLista){
                 item.setIcon(R.drawable.ic_lista)
+                title = "Ubicacion"
                 esLista = false
                 //mostrar mapa
                 Log.v("aaaaa", "mostrar mapa")
-
                 cambiarFragmento(MapsFragment())
 
             }else{
                 item.setIcon(R.drawable.ic_maps)
+                title = "SUPER MERCADOS"
                 esLista = true
-
                 cambiarFragmento(ListaFragment())
                 //mostrar lista
                 Log.v("aaaaa", "mostrar lista")
-
-
             }
         }
-
-
         return true
     }
 

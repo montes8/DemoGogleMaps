@@ -1,6 +1,7 @@
 package com.example.eddymontesinos.demogoglemaps
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.eddymontesinos.demogoglemaps.adapter.SuperMercadoAdapter
+import com.example.eddymontesinos.demogoglemaps.view.DetalleActivity
 
 
 class ListaFragment : Fragment() {
@@ -21,10 +23,17 @@ class ListaFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         myVista =inflater.inflate(R.layout.fragment_lista, container, false)
-
         val reciclerView = myVista!!.findViewById<RecyclerView>(R.id.my_recyclerview)
-
         superMercadosAdapter = SuperMercadoAdapter(context!!.applicationContext)
+
+
+        superMercadosAdapter?.onDetalleClick = {
+
+            val intent = Intent(context!!.applicationContext,DetalleActivity::class.java)
+            intent.putExtra(DetalleActivity.SUPERMERCADO_PARAM, it)
+            startActivity(intent)
+        }
+
 
         reciclerView.layoutManager = LinearLayoutManager(context!!.applicationContext)
         reciclerView.adapter = superMercadosAdapter
