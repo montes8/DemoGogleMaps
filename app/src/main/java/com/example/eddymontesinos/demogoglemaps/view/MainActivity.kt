@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         ajusteToolbarHome()
-        cargandoLista()
+
 
 
 
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         title = "SUPER MERCADOS"
     }
 
-    private  fun cargandoLista(){
+ /*   private  fun cargandoLista(){
         superMercadosAdapter = SuperMercadoAdapter(this)
 
         my_recyclerview.layoutManager = LinearLayoutManager(this)
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             }
         }.start()
 
-    }
+    }*/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_home, menu)

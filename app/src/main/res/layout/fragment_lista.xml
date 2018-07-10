@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ListaFragment">
-    
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recyclerview"

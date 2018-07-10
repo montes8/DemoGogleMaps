@@ -19,12 +19,4 @@
         app:titleTextColor="#FFFFFF" />
 
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:itemCount="5"
-        tools:listitem="@layout/molde_lista_supermercados" />
-
 </LinearLayout>
