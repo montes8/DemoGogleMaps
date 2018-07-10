@@ -2,26 +2,35 @@ package com.example.eddymontesinos.demogoglemaps
 
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
-class MapsFragment : Fragment() ,OnMapReadyCallback{
+class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
 
-    val mapFragment = SupportMapFragment()
-    var myVista : View? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        myVista = inflater.inflate(R.layout.fragment_maps, container, false)
+    var mapa: GoogleMap? = null
 
-        return myVista
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val rootView = super.onCreateView(inflater, container, savedInstanceState)
+
+        getMapAsync(this)
+
+        return rootView
     }
 
-    override fun onMapReady(p0: GoogleMap?) {
+    override fun onMapReady( map: GoogleMap?) {
+        this.mapa = map
+        val peru = LatLng(-11.927467033443245,-76.99462369988953)
+         mapa?.addMarker(MarkerOptions().position(peru).title("PERU.Lima"))
+        mapa?.moveCamera(CameraUpdateFactory.newLatLng(peru))
 
     }
+
+
 }
