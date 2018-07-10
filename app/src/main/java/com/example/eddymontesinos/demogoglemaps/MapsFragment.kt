@@ -6,11 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.eddymontesinos.demogoglemaps.model.Mercado
-import com.example.eddymontesinos.demogoglemaps.model.SuperMercado
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -20,6 +15,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.support.v7.content.res.AppCompatResources
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptor
 
 
@@ -48,6 +44,7 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
         val marcador : MarkerOptions?
         val superIcono = getBitmapDescriptor(R.drawable.ic_shopping)
         val peru = LatLng(-11.927467033443245,-76.99462369988953)
+        mapa!!.uiSettings.isZoomControlsEnabled = true
         //añadimos la posicion del marcador y le pasamos el titulo
          mapa?.addMarker(MarkerOptions().position(peru).title("PERU.Lima"))// se gregaga para k sea arrastrable isDraggable(true)
         //personalñizandomarcador customisando
@@ -63,6 +60,7 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
                   .title(it.nombre)
                   .icon(superIcono))
       }
+
         val camara = CameraPosition.Builder()
                 .target(peru)
                 .zoom(5f)//vista deacuerdo a pais
@@ -71,6 +69,7 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
                 //angulo de nuestro marcador 0 a 90 grados
                 .build()
         mapa?.animateCamera(CameraUpdateFactory.newCameraPosition(camara))
+
         //movemos la camara al ñpunto del marcador
          //mapa?.moveCamera(CameraUpdateFactory.newLatLng(peru))
 
