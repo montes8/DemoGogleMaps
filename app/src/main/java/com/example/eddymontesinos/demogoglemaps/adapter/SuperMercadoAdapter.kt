@@ -2,6 +2,7 @@ package com.example.eddymontesinos.demogoglemaps.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +13,10 @@ import kotlinx.android.synthetic.main.molde_lista_supermercados.view.*
 
 class SuperMercadoAdapter (val contexto: Context, var onDetalleClick: ((SuperMercado) -> Unit)? = null): RecyclerView.Adapter<SuperMercadoAdapter.SuperMercadoViewHolder>(){
 
-    private var listaSuperMercados : List<SuperMercado>? = null
+    private var listaSuperMercados = ArrayList<SuperMercado>()
 
     fun addList(listaSuperMercados : List<SuperMercado>){
-        this.listaSuperMercados = listaSuperMercados
-
+        this.listaSuperMercados.addAll(listaSuperMercados)
         notifyDataSetChanged()
     }
 
@@ -33,7 +33,6 @@ class SuperMercadoAdapter (val contexto: Context, var onDetalleClick: ((SuperMer
 
     override fun onBindViewHolder(holder: SuperMercadoViewHolder, position: Int) {
         val supermercado = listaSuperMercados!![position]
-
 
         holder.image.setImageDrawable(DemoUtils.getImage(contexto, supermercado.fotoMiniatura))
         holder.nombre.text = supermercado.nombre

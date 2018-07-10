@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.eddymontesinos.demogoglemaps.DemoApplication
 import com.example.eddymontesinos.demogoglemaps.R
@@ -12,6 +13,10 @@ import com.example.eddymontesinos.demogoglemaps.adapter.DetalleAdapter
 import com.example.eddymontesinos.demogoglemaps.adapter.SuperMercadoAdapter
 import com.example.eddymontesinos.demogoglemaps.model.SuperMercado
 import kotlinx.android.synthetic.main.activity_detalle.*
+import android.support.v7.widget.PagerSnapHelper
+import android.support.v7.widget.SnapHelper
+
+
 
 class DetalleActivity : AppCompatActivity() {
     var fotoAdapter : DetalleAdapter? = null
@@ -40,8 +45,10 @@ class DetalleActivity : AppCompatActivity() {
 
         fotoAdapter = DetalleAdapter(this@DetalleActivity)
 
-        detalle_recyclerview.layoutManager = LinearLayoutManager(this@DetalleActivity)
+        detalle_recyclerview.layoutManager = LinearLayoutManager(this@DetalleActivity,LinearLayout.HORIZONTAL,false)
         detalle_recyclerview.adapter = fotoAdapter
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(detalle_recyclerview)
 
         Thread{
             val lista = DemoApplication.database!!.fotoDao().verFotoSupermercado(detallesSuperMercado.id!!.toLong())

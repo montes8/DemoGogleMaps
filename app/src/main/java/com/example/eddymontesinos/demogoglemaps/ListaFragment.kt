@@ -24,8 +24,7 @@ class ListaFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         myVista =inflater.inflate(R.layout.fragment_lista, container, false)
         val reciclerView = myVista!!.findViewById<RecyclerView>(R.id.my_recyclerview)
-        superMercadosAdapter = SuperMercadoAdapter(context!!.applicationContext)
-
+        superMercadosAdapter = SuperMercadoAdapter(context!!)
 
         superMercadosAdapter?.onDetalleClick = {
 
@@ -35,7 +34,7 @@ class ListaFragment : Fragment() {
         }
 
 
-        reciclerView.layoutManager = LinearLayoutManager(context!!.applicationContext)
+        reciclerView.layoutManager = LinearLayoutManager(context!!)
         reciclerView.adapter = superMercadosAdapter
 
                 Thread{

@@ -16,6 +16,14 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:titleTextColor="#FFFFFF" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/detalle_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:itemCount="5"
+        android:scrollbars="horizontal"
+        android:scrollbarStyle="outsideInset"
+        tools:listitem="@layout/molde_detalle" />
 
     <LinearLayout
 
@@ -164,10 +172,5 @@
     </LinearLayout>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/detalle_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:itemCount="5"
-        tools:listitem="@layout/molde_detalle" />
+
 </LinearLayout>
