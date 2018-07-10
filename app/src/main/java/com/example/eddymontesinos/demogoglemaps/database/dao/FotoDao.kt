@@ -13,4 +13,7 @@ interface FotoDao {
 
     @Insert
     fun insertarListaFotos(plato : ArrayList<Foto>) : Array<Long>
+
+    @Query("select * from Foto where idSuper = :superId ")
+    fun verFotoSupermercado(superId:Long) : List<Foto>
 }

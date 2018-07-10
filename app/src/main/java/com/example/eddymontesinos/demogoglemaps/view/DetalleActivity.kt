@@ -1,14 +1,21 @@
 package com.example.eddymontesinos.demogoglemaps.view
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.support.v7.widget.LinearLayoutManager
 import android.widget.TextView
+import com.example.eddymontesinos.demogoglemaps.DemoApplication
 import com.example.eddymontesinos.demogoglemaps.R
+import com.example.eddymontesinos.demogoglemaps.adapter.DetalleAdapter
+import com.example.eddymontesinos.demogoglemaps.adapter.SuperMercadoAdapter
 import com.example.eddymontesinos.demogoglemaps.model.SuperMercado
 import kotlinx.android.synthetic.main.activity_detalle.*
 
 class DetalleActivity : AppCompatActivity() {
-
+    var fotoAdapter : DetalleAdapter? = null
+    var handler : Handler = Handler()
 
     companion object {
         const val SUPERMERCADO_PARAM = "supermercado"
@@ -30,6 +37,18 @@ class DetalleActivity : AppCompatActivity() {
         text_detail_longitude.text = detallesSuperMercado.longitud.toString()
         text_detail_direccion.text = detallesSuperMercado.direccion
 
+
+        fotoAdapter = DetalleAdapter(this@DetalleActivity)
+
+        detalle_recyclerview.layoutManager = LinearLayoutManager(this@DetalleActivity)
+        detalle_recyclerview.adapter = fotoAdapter
+
+        Thread{
+            val lista = DemoApplication.database!!.fotoDao().verFotoSupermercado(detallesSuperMercado.id!!.toLong())
+            handler.post {
+                fotoAdapter!!.addList(lista)
+            }
+        }.start()
 
     }
 
