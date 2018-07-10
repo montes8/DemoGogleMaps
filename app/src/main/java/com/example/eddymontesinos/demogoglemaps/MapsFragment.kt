@@ -63,14 +63,14 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
                 }
             }
         }.start()
-
+/*
           mapa?.setOnMarkerClickListener(object :GoogleMap.OnMarkerClickListener{
               override fun onMarkerClick(p0: Marker?): Boolean {
                   startActivity<DetalleActivity>()
                   return true
               }
 
-          })
+          })*/
       /* val camara = CameraPosition.Builder()
                 .target(lima)
                 .zoom(10f)//vista deacuerdo a pais
