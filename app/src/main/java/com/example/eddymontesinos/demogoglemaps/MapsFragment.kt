@@ -13,6 +13,8 @@ import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.os.Handler
 import android.support.v7.content.res.AppCompatResources
+import android.util.Log
+import com.example.eddymontesinos.demogoglemaps.model.SuperMercado
 import com.example.eddymontesinos.demogoglemaps.view.DetalleActivity
 import com.example.eddymontesinos.demogoglemaps.view.PruebaActivity
 import com.google.android.gms.maps.*
@@ -23,10 +25,12 @@ import com.google.android.gms.maps.CameraUpdate
 import org.jetbrains.anko.support.v4.startActivity
 
 
-class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
+class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWindowClickListener {
+
 
     var mapa: GoogleMap? = null
     var handler : Handler = Handler()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = super.onCreateView(inflater, container, savedInstanceState)
         getMapAsync(this)
@@ -41,6 +45,7 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
 
         val lima = LatLng(-11.97650551576034,-77.05710844110047)
         mapa!!.uiSettings.isZoomControlsEnabled = true
+        mapa!!.setOnInfoWindowClickListener(this)
         mapa!!.uiSettings.isCompassEnabled= true
         //añadimos la posicion del marcador y le pasamos el titulo
          //mapa?.addMarker(MarkerOptions().position(lima).title("PERU.Lima"))// se gregaga para k sea arrastrable isDraggable(true)
@@ -52,27 +57,20 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
 
             handler.post {
 
+                val hashMap = HashMap<Marker,SuperMercado>()
+                var contador =0
                 lista.forEach {
-
                     val marker = mapa?.addMarker(MarkerOptions().position(LatLng(it.latitud,it.longitud)).title(it.nombre))
-                    //marker?.tag = it
-                    builder.include(marker?.position)
+                    marker?.tag = it
 
+                    hashMap.put(marker!!,it)
+
+                    builder.include(marker?.position)
                     val bounds : LatLngBounds= builder.build()
                     val padding = 200 // offset from edges of the map in pixels
                     val cu :CameraUpdate= CameraUpdateFactory.newLatLngBounds(bounds,padding)
                     mapa?.moveCamera(cu)
-                    mapa?.setOnMarkerClickListener(object :GoogleMap.OnMarkerClickListener{
-                        override fun onMarkerClick(p0: Marker?): Boolean {
-                            val intent = Intent(context,DetalleActivity::class.java)
-                            intent.putExtra(DetalleActivity.SUPERMERCADO_MAPS,it)
-                            startActivity(intent)
-                            return true
-                        }
-
-                    })
                 }
-
             }
         }.start()
 
@@ -90,6 +88,15 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
 
 
     }
+
+
+    override fun onInfoWindowClick(p0: Marker?) {
+        val supermarket = p0?.tag as SuperMercado
+        val intent = Intent(context, DetalleActivity::class.java)
+        intent.putExtra(DetalleActivity.SUPERMERCADO_MAPS,supermarket)
+        startActivity(intent)
+    }
+
 
     private fun getBitmapDescriptor(id: Int): BitmapDescriptor {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -31,13 +31,15 @@ class DetalleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detalle)
         ajustarTollbarDetalle()
-        val detallesSuperMercado = intent.getParcelableExtra<SuperMercado>(SUPERMERCADO_PARAM)
-        val detalleMaps = intent.getParcelableExtra<SuperMercado>(SUPERMERCADO_MAPS)
-
 
         detalle_recyclerview.layoutManager = LinearLayoutManager(this@DetalleActivity, LinearLayout.HORIZONTAL, false)
         fotoAdapter = DetalleAdapter(this@DetalleActivity)
         detalle_recyclerview.adapter = fotoAdapter
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(detalle_recyclerview)
+
+        val detallesSuperMercado = intent.getParcelableExtra<SuperMercado>(SUPERMERCADO_PARAM)
+        val detalleMaps = intent.getParcelableExtra<SuperMercado>(SUPERMERCADO_MAPS)
 
         val nombre = findViewById<TextView>(R.id.text_detail_nombre)
         val latitud = findViewById<TextView>(R.id.text_detail_latitude)
@@ -50,28 +52,18 @@ class DetalleActivity : AppCompatActivity() {
                 text_detail_longitude.text = detallesSuperMercado.longitud.toString()
                 text_detail_direccion.text = detallesSuperMercado.direccion
 
-
-
-                val snapHelper = PagerSnapHelper()
-                snapHelper.attachToRecyclerView(detalle_recyclerview)
-
                 Thread {
                     val lista = DemoApplication.database!!.fotoDao().verFotoSupermercado(detallesSuperMercado.id!!.toLong())
                     handler.post {
                         fotoAdapter!!.addList(lista)
                     }
                 }.start()
-        }else{
+        }else {
 
             text_detail_nombre.text = detalleMaps.nombre
             text_detail_latitude.text = detalleMaps.latitud.toString()
             text_detail_longitude.text = detalleMaps.longitud.toString()
             text_detail_direccion.text = detalleMaps.direccion
-
-
-
-            val snapHelper = PagerSnapHelper()
-            snapHelper.attachToRecyclerView(detalle_recyclerview)
 
             Thread {
                 val lista = DemoApplication.database!!.fotoDao().verFotoSupermercado(detalleMaps.id!!.toLong())
