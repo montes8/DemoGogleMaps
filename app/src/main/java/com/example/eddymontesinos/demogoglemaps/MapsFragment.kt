@@ -1,34 +1,30 @@
 package com.example.eddymontesinos.demogoglemaps
 
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.eddymontesinos.demogoglemaps.model.Mercado
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.os.Handler
+import android.support.v4.app.ActivityCompat
 import android.support.v7.content.res.AppCompatResources
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.eddymontesinos.demogoglemaps.model.SuperMercado
 import com.example.eddymontesinos.demogoglemaps.utils.DemoUtils
 import com.example.eddymontesinos.demogoglemaps.view.DetalleActivity
-import com.example.eddymontesinos.demogoglemaps.view.PruebaActivity
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.CameraUpdate
-import kotlinx.android.synthetic.main.abc_activity_chooser_view.view.*
-import kotlinx.android.synthetic.main.molde_dialog_maps.*
-import org.jetbrains.anko.support.v4.startActivity
-
 
 class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWindowClickListener ,GoogleMap.InfoWindowAdapter{
 
@@ -54,6 +50,7 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
         mapa!!.setInfoWindowAdapter(this)
         mapa!!.uiSettings.isCompassEnabled= true
 
+
         val builder = LatLngBounds.Builder()
 
         Thread{
@@ -77,7 +74,6 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
                 }
             }
         }.start()
-
 
 
     }
