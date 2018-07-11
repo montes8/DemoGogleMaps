@@ -62,14 +62,17 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
                     val padding = 200 // offset from edges of the map in pixels
                     val cu :CameraUpdate= CameraUpdateFactory.newLatLngBounds(bounds,padding)
                     mapa?.moveCamera(cu)
-                }
-                mapa?.setOnMarkerClickListener(object :GoogleMap.OnMarkerClickListener{
-                    override fun onMarkerClick(p0: Marker?): Boolean {
-                        val intent = Intent(context,DetalleActivity::class.java)
-                        return true
-                    }
+                    mapa?.setOnMarkerClickListener(object :GoogleMap.OnMarkerClickListener{
+                        override fun onMarkerClick(p0: Marker?): Boolean {
+                            val intent = Intent(context,DetalleActivity::class.java)
+                            intent.putExtra(DetalleActivity.SUPERMERCADO_MAPS,it)
+                            startActivity(intent)
+                            return true
+                        }
 
-                })
+                    })
+                }
+
             }
         }.start()
 

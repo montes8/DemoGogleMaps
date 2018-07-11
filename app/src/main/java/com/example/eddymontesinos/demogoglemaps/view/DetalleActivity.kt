@@ -24,6 +24,7 @@ class DetalleActivity : AppCompatActivity() {
 
     companion object {
         const val SUPERMERCADO_PARAM = "supermercado"
+        const val SUPERMERCADO_MAPS = "supermercadodesdemapa"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +32,7 @@ class DetalleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detalle)
         ajustarTollbarDetalle()
         val detallesSuperMercado = intent.getParcelableExtra<SuperMercado>(SUPERMERCADO_PARAM)
+        val detalleMaps = intent.getParcelableExtra<SuperMercado>(SUPERMERCADO_MAPS)
 
 
         detalle_recyclerview.layoutManager = LinearLayoutManager(this@DetalleActivity, LinearLayout.HORIZONTAL, false)
@@ -61,7 +63,22 @@ class DetalleActivity : AppCompatActivity() {
                 }.start()
         }else{
 
-            Toast.makeText(this@DetalleActivity,"desde mapa",Toast.LENGTH_SHORT).show()
+            text_detail_nombre.text = detalleMaps.nombre
+            text_detail_latitude.text = detalleMaps.latitud.toString()
+            text_detail_longitude.text = detalleMaps.longitud.toString()
+            text_detail_direccion.text = detalleMaps.direccion
+
+
+
+            val snapHelper = PagerSnapHelper()
+            snapHelper.attachToRecyclerView(detalle_recyclerview)
+
+            Thread {
+                val lista = DemoApplication.database!!.fotoDao().verFotoSupermercado(detalleMaps.id!!.toLong())
+                handler.post {
+                    fotoAdapter!!.addList(lista)
+                }
+            }.start()
         }
     }
 
