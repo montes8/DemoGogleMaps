@@ -15,7 +15,7 @@ import com.example.eddymontesinos.demogoglemaps.model.SuperMercado
 import kotlinx.android.synthetic.main.activity_detalle.*
 import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.SnapHelper
-
+import android.widget.Toast
 
 
 class DetalleActivity : AppCompatActivity() {
@@ -32,31 +32,37 @@ class DetalleActivity : AppCompatActivity() {
         ajustarTollbarDetalle()
         val detallesSuperMercado = intent.getParcelableExtra<SuperMercado>(SUPERMERCADO_PARAM)
 
+
+        detalle_recyclerview.layoutManager = LinearLayoutManager(this@DetalleActivity, LinearLayout.HORIZONTAL, false)
+        fotoAdapter = DetalleAdapter(this@DetalleActivity)
+        detalle_recyclerview.adapter = fotoAdapter
+
         val nombre = findViewById<TextView>(R.id.text_detail_nombre)
         val latitud = findViewById<TextView>(R.id.text_detail_latitude)
         val longitud = findViewById<TextView>(R.id.text_detail_longitude)
         val direccion = findViewById<TextView>(R.id.text_detail_direccion)
 
-        text_detail_nombre.text = detallesSuperMercado.nombre
-        text_detail_latitude.text = detallesSuperMercado.latitud.toString()
-        text_detail_longitude.text = detallesSuperMercado.longitud.toString()
-        text_detail_direccion.text = detallesSuperMercado.direccion
+        if (detallesSuperMercado != null){
+                text_detail_nombre.text = detallesSuperMercado.nombre
+                text_detail_latitude.text = detallesSuperMercado.latitud.toString()
+                text_detail_longitude.text = detallesSuperMercado.longitud.toString()
+                text_detail_direccion.text = detallesSuperMercado.direccion
 
 
-        fotoAdapter = DetalleAdapter(this@DetalleActivity)
 
-        detalle_recyclerview.layoutManager = LinearLayoutManager(this@DetalleActivity,LinearLayout.HORIZONTAL,false)
-        detalle_recyclerview.adapter = fotoAdapter
-        val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(detalle_recyclerview)
+                val snapHelper = PagerSnapHelper()
+                snapHelper.attachToRecyclerView(detalle_recyclerview)
 
-        Thread{
-            val lista = DemoApplication.database!!.fotoDao().verFotoSupermercado(detallesSuperMercado.id!!.toLong())
-            handler.post {
-                fotoAdapter!!.addList(lista)
-            }
-        }.start()
+                Thread {
+                    val lista = DemoApplication.database!!.fotoDao().verFotoSupermercado(detallesSuperMercado.id!!.toLong())
+                    handler.post {
+                        fotoAdapter!!.addList(lista)
+                    }
+                }.start()
+        }else{
 
+            Toast.makeText(this@DetalleActivity,"desde mapa",Toast.LENGTH_SHORT).show()
+        }
     }
 
 

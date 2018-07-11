@@ -1,6 +1,7 @@
 package com.example.eddymontesinos.demogoglemaps
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -64,7 +65,7 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback {
                 }
                 mapa?.setOnMarkerClickListener(object :GoogleMap.OnMarkerClickListener{
                     override fun onMarkerClick(p0: Marker?): Boolean {
-                        startActivity<PruebaActivity>()
+                        val intent = Intent(context,DetalleActivity::class.java)
                         return true
                     }
 
