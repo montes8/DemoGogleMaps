@@ -14,7 +14,10 @@ import android.os.Build
 import android.os.Handler
 import android.support.v7.content.res.AppCompatResources
 import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import com.example.eddymontesinos.demogoglemaps.model.SuperMercado
+import com.example.eddymontesinos.demogoglemaps.utils.DemoUtils
 import com.example.eddymontesinos.demogoglemaps.view.DetalleActivity
 import com.example.eddymontesinos.demogoglemaps.view.PruebaActivity
 import com.google.android.gms.maps.*
@@ -22,10 +25,12 @@ import com.google.android.gms.maps.model.*
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.CameraUpdate
+import kotlinx.android.synthetic.main.abc_activity_chooser_view.view.*
+import kotlinx.android.synthetic.main.molde_dialog_maps.*
 import org.jetbrains.anko.support.v4.startActivity
 
 
-class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWindowClickListener {
+class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWindowClickListener ,GoogleMap.InfoWindowAdapter{
 
 
     var mapa: GoogleMap? = null
@@ -36,19 +41,18 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
         getMapAsync(this)
 
 
+
+
         return rootView
     }
 
     override fun onMapReady( map: GoogleMap?) {
         this.mapa = map
 
-
-        val lima = LatLng(-11.97650551576034,-77.05710844110047)
         mapa!!.uiSettings.isZoomControlsEnabled = true
         mapa!!.setOnInfoWindowClickListener(this)
+        mapa!!.setInfoWindowAdapter(this)
         mapa!!.uiSettings.isCompassEnabled= true
-        //añadimos la posicion del marcador y le pasamos el titulo
-         //mapa?.addMarker(MarkerOptions().position(lima).title("PERU.Lima"))// se gregaga para k sea arrastrable isDraggable(true)
 
         val builder = LatLngBounds.Builder()
 
@@ -75,26 +79,34 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
         }.start()
 
 
-      /* val camara = CameraPosition.Builder()
-                .target(lima)
-                .zoom(10f)//vista deacuerdo a pais
-                .bearing(0f)//rotacion que se puede dar ala camara 0 a maximo de 365grados
-                .tilt(0f)//angulo de nuestro marcador 0 a 90 grados
-                .build()*/
-        //mapa?.animateCamera(CameraUpdateFactory.newCameraPosition(camara))
-
-        //movemos la camara al ñpunto del marcador
-       // mapa?.moveCamera(CameraUpdateFactory.newLatLng(lima))
-
 
     }
-
 
     override fun onInfoWindowClick(p0: Marker?) {
         val supermarket = p0?.tag as SuperMercado
         val intent = Intent(context, DetalleActivity::class.java)
         intent.putExtra(DetalleActivity.SUPERMERCADO_MAPS,supermarket)
         startActivity(intent)
+    }
+
+    override fun getInfoContents(info: Marker?): View {
+
+        val view = layoutInflater.inflate(R.layout.molde_dialog_maps,null)
+
+        val tvnombre = view.findViewById<TextView>(R.id.nombre_mercado_maps)
+        val tvdireccion = view.findViewById<TextView>(R.id.direccion_mercado_maps)
+        val tvImage = view.findViewById<ImageView>(R.id.imagen_maps)
+
+        val supers : SuperMercado = info?.tag as SuperMercado
+        tvImage.setImageDrawable(DemoUtils.getImage(context!!,supers.fotoMiniatura))
+        tvnombre.text = supers.nombre
+        tvdireccion.text =  supers.direccion
+
+        return view
+    }
+
+    override fun getInfoWindow(p0: Marker) :View?{
+      return null
     }
 
 
