@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
@@ -39,14 +40,19 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback{
     override fun onMapReady(map: GoogleMap?) {
         this.mapagps = map
 
-       if (ActivityCompat.checkSelfPermission(context!!,android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(context!!, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mapagps!!.isMyLocationEnabled = true
+                mapagps!!.uiSettings.isZoomControlsEnabled = true
 
-            requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), PERMISO_LOCATION)
+            } else {
+                requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), PERMISO_LOCATION)
+              }
         }else{
-            mapagps!!.isMyLocationEnabled = true
-           mapagps!!.uiSettings.isZoomControlsEnabled = true
-        }
 
+            mapagps!!.isMyLocationEnabled = true
+            mapagps!!.uiSettings.isZoomControlsEnabled = true
+        }
     }
 
 
@@ -66,6 +72,7 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback{
                         Log.d("resultado","resultado")
                         Toast.makeText(context,"has dado permiso", Toast.LENGTH_LONG).show()
                         mapagps!!.isMyLocationEnabled = true
+                        mapagps!!.uiSettings.isZoomControlsEnabled = true
                     }else{
                         Toast.makeText(context,"has denegado el permiso", Toast.LENGTH_LONG).show()
                     }
