@@ -33,9 +33,6 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         ajusteToolbarHomes()
         cambiarFragmento(ListaFragment())
-        permisoLocalizacion()
-
-
     }
 
     private fun ajusteToolbarHomes() {
@@ -101,5 +98,12 @@ class HomeActivity : AppCompatActivity() {
             return
         }
     }
+
+    //comprueba si el permiso pasado por parametro esta dato en el manifiesto si es true == 0 false ==1
+    fun checarpermiso(permission : String) :Boolean{
+        val result =this.checkCallingOrSelfPermission(permission)
+        return result == PackageManager.PERMISSION_GRANTED
+    }
+
 
 }
