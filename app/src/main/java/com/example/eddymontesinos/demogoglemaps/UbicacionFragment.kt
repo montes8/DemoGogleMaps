@@ -3,18 +3,17 @@ package com.example.eddymontesinos.demogoglemaps
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.eddymontesinos.demogoglemaps.view.HomeActivity
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -22,7 +21,9 @@ import com.google.android.gms.maps.SupportMapFragment
 
 
 
-class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
+class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback , GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener {
+
 
     companion object {
         private const val PERMISO_LOCATION = 1
@@ -36,11 +37,6 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
         return rootView
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-
     override fun onMapReady(map: GoogleMap?) {
         this.mapagps = map
 
@@ -52,6 +48,14 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
         }
     }
 
+   // Si el usuario hace clic en el botón Mi ubicación, su aplicación recibe una devolución de llamada
+    override fun onMyLocationButtonClick(): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onMyLocationClick(p0: Location) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     @SuppressLint("MissingPermission")
@@ -76,6 +80,8 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
+
+
 }
 
 
