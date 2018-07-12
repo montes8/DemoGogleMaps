@@ -45,7 +45,7 @@ dependencies {
     implementation 'android.arch.persistence.room:rxjava2:1.1.1'
     kapt "android.arch.persistence.room:compiler:1.1.1"
 
-    //gogle maps
+    //gogle maps nos permite acceder a la libreri de goglemaps del movil
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
 
     testImplementation 'junit:junit:4.12'
