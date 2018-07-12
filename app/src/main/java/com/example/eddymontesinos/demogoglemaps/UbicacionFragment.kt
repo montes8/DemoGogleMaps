@@ -17,12 +17,10 @@ import android.widget.Toast
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import org.jetbrains.anko.support.v4.toast
 
 
-
-
-class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback , GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener {
+class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback{
 
 
     companion object {
@@ -37,25 +35,21 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback , GoogleMap.
         return rootView
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(map: GoogleMap?) {
         this.mapagps = map
 
-        if (ActivityCompat.checkSelfPermission(context!!,android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+       if (ActivityCompat.checkSelfPermission(context!!,android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
 
             requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), PERMISO_LOCATION)
         }else{
             mapagps!!.isMyLocationEnabled = true
+           mapagps!!.uiSettings.isZoomControlsEnabled = true
         }
+
     }
 
-   // Si el usuario hace clic en el botón Mi ubicación, su aplicación recibe una devolución de llamada
-    override fun onMyLocationButtonClick(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
-    override fun onMyLocationClick(p0: Location) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
 
     @SuppressLint("MissingPermission")
