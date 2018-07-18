@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.*
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.CameraUpdate
+import org.jetbrains.anko.support.v4.toast
 
 class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWindowClickListener ,GoogleMap.InfoWindowAdapter{
     companion object {
@@ -64,6 +65,7 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
 
                 mapa!!.uiSettings.isZoomControlsEnabled = true
                 mapa!!.setOnInfoWindowClickListener(this)
+
                 mapa!!.setInfoWindowAdapter(this)
                 mapa!!.uiSettings.isCompassEnabled= true
 
@@ -83,10 +85,10 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
                         }
                     }
                 }.start()
+
                 buildLocationrequest()
                 buidlLocationCallback()
                 fusedLocationProviderClient!!.requestLocationUpdates(locationrequet, locationCallback, Looper.myLooper())
-
 
             } else {
                 requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),PERMISO_LOCATION)
@@ -108,9 +110,11 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
 
     override fun onInfoWindowClick(p0: Marker?) {
         val supermarket = p0?.tag as SuperMercado
-        val intent = Intent(context, DetalleActivity::class.java)
-        intent.putExtra(DetalleActivity.SUPERMERCADO_MAPS,supermarket)
-        startActivity(intent)
+            val intent = Intent(context, DetalleActivity::class.java)
+            intent.putExtra(DetalleActivity.SUPERMERCADO_MAPS,supermarket)
+            startActivity(intent)
+
+
     }
 
     override fun getInfoContents(info: Marker?): View {
@@ -120,10 +124,15 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
         val tvdireccion = view.findViewById<TextView>(R.id.direccion_mercado_maps)
         val tvImage = view.findViewById<ImageView>(R.id.imagen_maps)
 
-        val supers : SuperMercado = info?.tag as SuperMercado
-        tvImage.setImageDrawable(DemoUtils.getImage(context!!,supers.fotoMiniatura))
-        tvnombre.text = supers.nombre
-        tvdireccion.text =  supers.direccion
+        try {
+            val supers : SuperMercado = info?.tag as SuperMercado
+
+            tvImage.setImageDrawable(DemoUtils.getImage(context!!,supers.fotoMiniatura))
+            tvnombre.text = supers.nombre
+            tvdireccion.text =  supers.direccion
+        }catch (e:TypeCastException){
+            e.printStackTrace()
+        }
 
         return view
     }
@@ -138,7 +147,7 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
                 super.onLocationResult(po)
                 val location =po!!.locations.get(po.locations.size-1)
 
-                marker = mapa!!.addMarker(MarkerOptions().position(LatLng(location.latitude,location.longitude)).draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+                marker = mapa!!.addMarker(MarkerOptions().position(LatLng(location.latitude,location.longitude)).draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).title("Aqui Estoy"))
             }
         }
     }
