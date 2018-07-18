@@ -3,37 +3,28 @@ package com.example.eddymontesinos.demogoglemaps
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.os.ProxyFileDescriptorCallback
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
-import kotlinx.android.synthetic.main.fragment_ubicacion.*
+import com.google.android.gms.tasks.Task
 
 
 class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
 
 
     companion object {
-        private const val PERMISO_LOCATION = 1
-        private const val UPDATE_INTERVAL: Long = 15000  /* 15 secs */
-        private const val FASTEST_INTERVAL: Long = 5000 /* 5 secs */
+        private const val PERMISO_LOCATIO = 1
     }
     var mapagps: GoogleMap? = null
     var marker : Marker? = null
@@ -63,16 +54,22 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
                 mapagps!!.isMyLocationEnabled = true
                 mapagps!!.uiSettings.isZoomControlsEnabled = true
                 fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context!!)
-
                 buildLocationrequest()
                 buidlLocationCallback()
+                val location= fusedLocationProviderClient!!.lastLocation
+                        //requestLocationUpdates(locationrequet, locationCallback, Looper.myLooper())
+                location.addOnCompleteListener {
+                    val localizaion :Location = location.result
+                    val lugar = LatLng(localizaion.latitude,localizaion.longitude)
 
-                fusedLocationProviderClient!!.requestLocationUpdates(locationrequet, locationCallback, Looper.myLooper())
+                    mapagps!!.moveCamera(CameraUpdateFactory.newLatLngZoom(lugar,10f))
+                    marker = mapagps!!.addMarker(MarkerOptions().position(LatLng(localizaion.latitude,localizaion.longitude)).draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+                }
 
 
 
             } else {
-                requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), PERMISO_LOCATION)
+                requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), PERMISO_LOCATIO)
               }
         }else{
 
@@ -82,6 +79,7 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
         }
     }
 
+
     private fun buidlLocationCallback() {
        locationCallback = object :LocationCallback(){
            override fun onLocationResult(po: LocationResult?) {
@@ -90,9 +88,10 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
                val ubicacion = LatLng(location.latitude,location.latitude)
 
 
-                    marker = mapagps!!.addMarker(MarkerOptions().position(LatLng(location.latitude,location.longitude)).draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+               marker = mapagps!!.addMarker(MarkerOptions().position(LatLng(location.latitude,location.longitude)).draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+               mapagps!!.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacion,10f))
 
-                       mapagps!!.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacion,5f))
+
            }
        }
     }
@@ -110,7 +109,7 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         Log.d("onRequest","onRequestPermissionsResult")
         when(requestCode){
-            PERMISO_LOCATION ->{
+            PERMISO_LOCATIO ->{
                 Log.d("requestCode","requestCode")
                 val permiso = permissions[0]
                 val resultado = grantResults[0]

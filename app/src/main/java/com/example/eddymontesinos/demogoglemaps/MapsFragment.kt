@@ -2,6 +2,7 @@ package com.example.eddymontesinos.demogoglemaps
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -13,13 +14,17 @@ import android.graphics.Canvas
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.support.v4.app.ActivityCompat
 import android.support.v7.content.res.AppCompatResources
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.eddymontesinos.demogoglemaps.model.SuperMercado
 import com.example.eddymontesinos.demogoglemaps.utils.DemoUtils
 import com.example.eddymontesinos.demogoglemaps.view.DetalleActivity
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.maps.model.LatLngBounds
@@ -27,10 +32,17 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.CameraUpdate
 
 class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWindowClickListener ,GoogleMap.InfoWindowAdapter{
-
+    companion object {
+        private const val PERMISO_LOCATION = 1
+    }
 
     var mapa: GoogleMap? = null
     var handler : Handler = Handler()
+    var mapagps: GoogleMap? = null
+    var marker : Marker? = null
+    var fusedLocationProviderClient : FusedLocationProviderClient? = null
+    var locationrequet : LocationRequest? = null
+    var locationCallback : LocationCallback? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = super.onCreateView(inflater, container, savedInstanceState)
@@ -44,36 +56,52 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
 
     override fun onMapReady( map: GoogleMap?) {
         this.mapa = map
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context!!)
 
-        mapa!!.uiSettings.isZoomControlsEnabled = true
-        mapa!!.setOnInfoWindowClickListener(this)
-        mapa!!.setInfoWindowAdapter(this)
-        mapa!!.uiSettings.isCompassEnabled= true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(context!!, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
 
-        val builder = LatLngBounds.Builder()
+                mapa!!.uiSettings.isZoomControlsEnabled = true
+                mapa!!.setOnInfoWindowClickListener(this)
+                mapa!!.setInfoWindowAdapter(this)
+                mapa!!.uiSettings.isCompassEnabled= true
 
-        Thread{
-            val lista = DemoApplication.database!!.superMercadoDao().litarSuperMercados()
+                val builder = LatLngBounds.Builder()
+                Thread{
+                    val lista = DemoApplication.database!!.superMercadoDao().litarSuperMercados()
+                    handler.post {
+                        lista.forEach {
+                            marker = mapa?.addMarker(MarkerOptions().position(LatLng(it.latitud,it.longitud)).title(it.nombre))
+                            marker?.tag = it
 
-            handler.post {
+                            builder.include(marker?.position)
+                            val bounds : LatLngBounds= builder.build()
+                            val padding = 200 // offset from edges of the map in pixels
+                            val cu :CameraUpdate= CameraUpdateFactory.newLatLngBounds(bounds,padding)
+                            mapa?.moveCamera(cu)
+                        }
+                    }
+                }.start()
+                buildLocationrequest()
+                buidlLocationCallback()
+                fusedLocationProviderClient!!.requestLocationUpdates(locationrequet, locationCallback, Looper.myLooper())
 
-                val hashMap = HashMap<Marker,SuperMercado>()
-                var contador =0
-                lista.forEach {
-                    val marker = mapa?.addMarker(MarkerOptions().position(LatLng(it.latitud,it.longitud)).title(it.nombre))
-                    marker?.tag = it
 
-                    hashMap.put(marker!!,it)
-
-                    builder.include(marker?.position)
-                    val bounds : LatLngBounds= builder.build()
-                    val padding = 200 // offset from edges of the map in pixels
-                    val cu :CameraUpdate= CameraUpdateFactory.newLatLngBounds(bounds,padding)
-                    mapa?.moveCamera(cu)
-                }
+            } else {
+                requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),PERMISO_LOCATION)
             }
-        }.start()
+        }else{
+
+
+            mapa!!.uiSettings.isZoomControlsEnabled = true
+
+        }
+
+
+
+
+
 
 
     }
@@ -86,7 +114,6 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
     }
 
     override fun getInfoContents(info: Marker?): View {
-
         val view = layoutInflater.inflate(R.layout.molde_dialog_maps,null)
 
         val tvnombre = view.findViewById<TextView>(R.id.nombre_mercado_maps)
@@ -103,6 +130,49 @@ class MapsFragment: SupportMapFragment() ,OnMapReadyCallback,GoogleMap.OnInfoWin
 
     override fun getInfoWindow(p0: Marker) :View?{
       return null
+    }
+
+    private fun buidlLocationCallback() {
+        locationCallback = object :LocationCallback(){
+            override fun onLocationResult(po: LocationResult?) {
+                super.onLocationResult(po)
+                val location =po!!.locations.get(po.locations.size-1)
+
+                marker = mapa!!.addMarker(MarkerOptions().position(LatLng(location.latitude,location.longitude)).draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+            }
+        }
+    }
+
+    private fun buildLocationrequest() {
+        locationrequet = LocationRequest()
+        locationrequet?.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+        locationrequet?.interval = 5000
+        locationrequet?.fastestInterval = 3000
+        locationrequet?.smallestDisplacement = 10f
+    }
+
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        Log.d("onRequest","onRequestPermissionsResult")
+        when(requestCode){
+            PERMISO_LOCATION ->{
+                Log.d("requestCode","requestCode")
+                val permiso = permissions[0]
+                val resultado = grantResults[0]
+                if(permiso == Manifest.permission.ACCESS_FINE_LOCATION){
+                    Log.d("permiso","permiso")
+                    if (resultado == PackageManager.PERMISSION_GRANTED){
+                        Log.d("resultado","resultado")
+                        Toast.makeText(context,"has dado permiso", Toast.LENGTH_LONG).show()
+                        mapa!!.uiSettings.isZoomControlsEnabled = true
+                    }else{
+                        Toast.makeText(context,"has denegado el permiso", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
     }
 
 

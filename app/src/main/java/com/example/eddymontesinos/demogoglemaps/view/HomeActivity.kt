@@ -1,22 +1,11 @@
 package com.example.eddymontesinos.demogoglemaps.view
 
-import android.Manifest
-import android.app.Activity
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
-import android.support.v4.app.ListFragment
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.example.eddymontesinos.demogoglemaps.ListaFragment
 import com.example.eddymontesinos.demogoglemaps.MapsFragment
 import com.example.eddymontesinos.demogoglemaps.R
@@ -88,22 +77,5 @@ class HomeActivity : AppCompatActivity() {
             }
              return true
     }
-
-    fun permisoLocalizacion(){
-        if (ActivityCompat.checkSelfPermission(this,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 1)
-
-            return
-        }
-    }
-
-    //comprueba si el permiso pasado por parametro esta dato en el manifiesto si es true == 0 false ==1
-    fun checarpermiso(permission : String) :Boolean{
-        val result =this.checkCallingOrSelfPermission(permission)
-        return result == PackageManager.PERMISSION_GRANTED
-    }
-
 
 }
