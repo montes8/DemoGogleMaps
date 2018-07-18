@@ -17,7 +17,6 @@ import android.widget.Toast
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
-import com.google.android.gms.tasks.Task
 
 
 class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
@@ -56,17 +55,7 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
                 fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context!!)
                 buildLocationrequest()
                 buidlLocationCallback()
-                val location= fusedLocationProviderClient!!.lastLocation
-                        //requestLocationUpdates(locationrequet, locationCallback, Looper.myLooper())
-                location.addOnCompleteListener {
-                    val localizaion :Location = location.result
-                    val lugar = LatLng(localizaion.latitude,localizaion.longitude)
-
-                    mapagps!!.moveCamera(CameraUpdateFactory.newLatLngZoom(lugar,10f))
-                    marker = mapagps!!.addMarker(MarkerOptions().position(LatLng(localizaion.latitude,localizaion.longitude)).draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
-                }
-
-
+                fusedLocationProviderClient!!.requestLocationUpdates(locationrequet, locationCallback, Looper.myLooper())
 
             } else {
                 requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), PERMISO_LOCATIO)
@@ -85,11 +74,8 @@ class UbicacionFragment : SupportMapFragment() , OnMapReadyCallback {
            override fun onLocationResult(po: LocationResult?) {
                super.onLocationResult(po)
                val location =po!!.locations.get(po.locations.size-1)
-               val ubicacion = LatLng(location.latitude,location.latitude)
-
-
                marker = mapagps!!.addMarker(MarkerOptions().position(LatLng(location.latitude,location.longitude)).draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
-               mapagps!!.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacion,10f))
+               mapagps!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude,location.longitude),10f))
 
 
            }
